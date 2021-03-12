@@ -7,6 +7,15 @@ db_instance=DatabaseHelper()
 def get():
     db_instance.get_a_todo()
 
+@app.route('/api/tasks/bystatus/<status>',methods=["GET"])
+def get_by_status(status):
+    db_instance.get_a_todo_by_status(status)
+
+@app.route('/api/tasks/byid/<id>',methods=["GET"])
+def get_a_todo_by_id(id):
+    db_instance.get_a_todo_by_id(id)
+
+
 @app.route('/api/tasks/delete/<id>',methods=["DELETE"])
 def delete(id):
     db_instance.delete_a_to_do(id)
