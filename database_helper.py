@@ -1,5 +1,6 @@
 import mysql.connector
 from flask import request
+from flask import jsonify
 
 
 class DatabaseHelper:
@@ -34,6 +35,7 @@ class DatabaseHelper:
 
 
 
+
     def update_a_to_do(self, id):
         _json = request.get_json()
         _text = _json['text']
@@ -53,9 +55,26 @@ class DatabaseHelper:
         self.mydb.commit()
         print(mycursor.rowcount, "record(s) deleted")
 
+    def get_a_todo_by_status(self,status):
+        mycursor = self.mydb.cursor(buffered=True)
+        sql = "Select text,status FROM Tasks  WHERE status=%s"
+        val=(status,)
+        mycursor.execute(sql,val)
+        self.mydb.commit()
+        myresult = mycursor.fetchall()
 
-obj1 = DatabaseHelper()
-#obj1.search_a_todo()
-#obj1.update_a_to_do(17)
-#obj1.add_a_todo()
-#obj1.delete_a_to_do(17)
+        for x in myresult:
+            print (x)
+       # return {"message": "inside put method"}, 200
+
+
+    def  get_a_todo_by_id(self,id):
+        mycursor = self.mydb.cursor(buffered=True)
+
+        sql = "Select text,status FROM Tasks  WHERE id ={}".format(id)
+        mycursor.execute(sql)
+        self.mydb.commit()
+        myresult = mycursor.fetchall()
+
+        for x in myresult:
+            print(x)
